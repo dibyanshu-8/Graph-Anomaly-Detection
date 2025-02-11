@@ -11,3 +11,7 @@ from rest_framework.views import APIView
 from .models import*
 from .serializers import*
 
+class BanksAPIView(generics.ListCreateAPIView):
+    queryset=Bank.objects.all()
+    serializer_class=BankSerializer
+    
