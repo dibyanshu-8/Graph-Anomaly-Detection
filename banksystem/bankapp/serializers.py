@@ -19,3 +19,15 @@ class BranchDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Branch
         fields = ('__all__')
+        
+class ClientManagerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ClientManager
+        fields = ('__all__')
+        
+    
+class ClientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Client
+        fields = ('__all__')
+        
