@@ -33,5 +33,9 @@ class Bank(models.model):
     def __str__(self):
         return self.name
     
+class ClientManager(models.Model):
+    name=models.charfield(max_length=200)
     
+    def __str__(self):
+        return self.name
     
