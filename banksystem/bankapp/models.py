@@ -39,3 +39,17 @@ class ClientManager(models.Model):
     def __str__(self):
         return self.name
     
+class Client(models.Model):
+    name=models.CharField(max_length=200)
+    address=models.CharField(max_length=200)
+    
+    
+    def json_object(self):
+        return{
+            'name': self.name,
+            'address': self.address
+        }
+    
+    def __str__(self):
+        return self.name
+    
