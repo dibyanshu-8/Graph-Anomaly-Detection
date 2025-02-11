@@ -21,5 +21,17 @@ class branch(models.Model):
     def __str__(self):
         return self.name
 
-        
+class Bank(models.model):
+    name=models.charfield(max_length=200)
+    branch=models.foreignkey(Branch,on_delete=models.CASCADE)
+    
+    def json_object(self):
+        return {
+            'name':self.name,
+            'branch':self.branch
+        }
+    def __str__(self):
+        return self.name
+    
+    
     
