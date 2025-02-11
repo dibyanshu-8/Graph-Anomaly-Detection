@@ -12,3 +12,10 @@ class BranchSerializer(serializers.ModelSerializer):
     class Meta:
         model= Branch
         fields=('__all__')
+        read_only_fields = ('id',)
+
+        
+class BranchDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Branch
+        fields = ('__all__')
