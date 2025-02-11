@@ -1,5 +1,6 @@
-from django.db import models
 from __future__ import unicode_literals
+from django.db import models
+
 
 # Create your models here.
 class branch(models.Model):
@@ -11,7 +12,7 @@ class branch(models.Model):
          verbose_name_plural = "Branches"
          
          
-     def json_object(self):
+    def json_object(self):
         return {
             "name":self.name,
             "address":self.address,
@@ -21,9 +22,9 @@ class branch(models.Model):
     def __str__(self):
         return self.name
 
-class Bank(models.model):
-    name=models.charfield(max_length=200)
-    branch=models.foreignkey(Branch,on_delete=models.CASCADE)
+class Bank(models.Model):
+    name=models.CharField(max_length=200)
+    branch=models.ForeignKey(branch,on_delete=models.CASCADE)
     
     def json_object(self):
         return {
@@ -34,7 +35,7 @@ class Bank(models.model):
         return self.name
     
 class ClientManager(models.Model):
-    name=models.charfield(max_length=200)
+    name=models.CharField(max_length=200)
     
     def __str__(self):
         return self.name
