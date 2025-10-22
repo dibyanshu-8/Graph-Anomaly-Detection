@@ -1,0 +1,7 @@
+fraud:
+  name: fraud
+  source_field: sender
+  target_field: receiver
+  weight_field: amount
+  min_ring_size: 3
+  centrality_threshold: 0.05
