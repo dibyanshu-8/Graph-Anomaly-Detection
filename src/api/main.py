@@ -7,9 +7,8 @@ from contextlib import asynccontextmanager
 
 
 from ..domains.fraud import FraudDomainProcessor
-from ..domains.social import SocialDomainProcessor
 from ..persistence.neo4j_repo import Neo4jRepository
-from ..utils.monitoring import MetricsCollector
+from ..utils.monitoring import metrics_collector 
 from ..api.middleware import RateLimiter
 
 # Pydantic models
@@ -33,7 +32,7 @@ async def lifespan(app: FastAPI):
     app.state.metrics = MetricsCollector()
     app.state.processors = {
         'fraud': FraudDomainProcessor(),
-        'social': SocialDomainProcessor(),
+        
         # Add more domains
     }
     yield
@@ -44,6 +43,7 @@ async def lifespan(app: FastAPI):
 import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+metrics_collector.start_server()
 app = FastAPI(
     title="Graph Anomaly Detection Platform",
     description="Production-grade anomaly detection using graph algorithms",

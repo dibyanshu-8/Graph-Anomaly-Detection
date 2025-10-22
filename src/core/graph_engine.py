@@ -83,7 +83,7 @@ class UniversalGraphEngine(BaseGraphEngine):
             }
             G.nodes[node].update(node_data)
             
-    def incremental_update(self,G:nx.Digraph,new_data:List[Dict])->nx.DiGraph:
+    def incremental_update(self,G:nx.DiGraph,new_data:List[Dict])->nx.DiGraph:
         """incrementally update graph updates without full rebuild"""
         logger.info(f"Incremental update with {len(new_data)} new records")
         for item in new_data:
