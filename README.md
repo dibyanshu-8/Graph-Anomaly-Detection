@@ -1,10 +1,10 @@
-# 📈 Graph Anomaly Detection Platform
+# Graph Anomaly Detection Platform
 
-A production-grade platform designed to detect complex anomalies like fraud, social media bots, and e-commerce abuse by analyzing the connections and relationships within data. Instead of just looking at individual events, this system builds a "detective's corkboard" (a graph) to spot suspicious patterns and coordinated group activity in real-time.
+A production-grade platform designed to detect complex anomalies like fraud by analyzing the connections and relationships within data. Instead of just looking at individual events, this system builds a graph to spot suspicious patterns and coordinated group activity in real-time.
 
 ---
 
-## ✨ Key Features
+## Key Features
 
 -   **Graph-Based Detection:** Uses the power of graph algorithms (like centrality and cycle detection) to find sophisticated anomalies that simple rule engines would miss.
 -   **Real-Time & Scalable:** Built with FastAPI for high-performance, asynchronous request handling, making it suitable for real-time data streams.
@@ -14,9 +14,9 @@ A production-grade platform designed to detect complex anomalies like fraud, soc
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
--   **Backend:** Python 3.10+
+-   **Backend:** Python 3.12.10
 -   **API Framework:** FastAPI
 -   **Graph Analytics:** NetworkX
 -   **Database:** Neo4j (Graph Database)
@@ -25,7 +25,7 @@ A production-grade platform designed to detect complex anomalies like fraud, soc
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 Follow these steps to get the platform running on your local machine.
 
@@ -33,7 +33,7 @@ Follow these steps to get the platform running on your local machine.
 
 -   Git
 -   [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
--   Python 3.10+ and `pip`.
+-   Python 3.12.10 and `pip`.
 
 ### Installation & Setup
 
@@ -72,7 +72,7 @@ Follow these steps to get the platform running on your local machine.
 
 ---
 
-## 💡 How to Use
+## How to Use
 
 Once the server is running, you can interact with the API using the automatically generated documentation.
 
@@ -117,6 +117,4 @@ Once the server is running, you can interact with the API using the automaticall
 
 ---
 
-## 📜 License
 
-This project is licensed under the MIT License.
