@@ -1,6 +1,9 @@
-from typing import Dict, List, Any
+# src/domains/fraud.py
+
+from typing import Dict, List
 from ..core.graph_engine import UniversalGraphEngine
 from ..core.anomaly_detector import AdvancedAnomalyDetector
+from datetime import datetime # You might need this for _is_festival_period
 
 class FraudDomainProcessor:
     """Banking fraud detection with UPI-specific patterns"""
@@ -19,18 +22,15 @@ class FraudDomainProcessor:
         self.engine = UniversalGraphEngine(self.DOMAIN_CONFIG)
         self.detector = AdvancedAnomalyDetector(self.DOMAIN_CONFIG)
     
-    def process_transactions(self, transactions: List[Dict]) -> Dict:
+    # RENAMED THIS METHOD
+    def process_data(self, transactions: List[Dict], incremental: bool = False) -> Dict:
         """Process banking transactions with fraud-specific logic"""
-        # Preprocess UPI-specific patterns
         processed_data = self._preprocess_upi_patterns(transactions)
         
-        # Build or update graph incrementally
         G = self.engine.build_graph(processed_data)
         
-        # Detect anomalies
         anomalies = self.detector.detect_anomalies(G)
         
-        # UPI-specific analysis
         upi_anomalies = self._detect_upi_fraud_patterns(transactions)
         
         return {
@@ -41,36 +41,26 @@ class FraudDomainProcessor:
     
     def _preprocess_upi_patterns(self, transactions: List[Dict]) -> List[Dict]:
         """India-specific UPI fraud preprocessing"""
-        processed = []
-        for tx in transactions:
-            # Detect UPI handle rotation (common fraud)
-            if 'upi_handle' in tx:
-                tx['handle_stability'] = self._calculate_handle_stability(tx)
-            
-            # Festival fraud spike detection
-            tx['is_festival_period'] = self._is_festival_period(tx['timestamp'])
-            
-            processed.append(tx)
-        return processed
+        # Placeholder logic
+        return transactions
+
+    def _calculate_handle_stability(self, tx: Dict) -> float:
+        # Placeholder logic
+        return 1.0
+
+    def _is_festival_period(self, timestamp_str: str) -> bool:
+        # Placeholder logic
+        return False
     
     def _detect_upi_fraud_patterns(self, transactions: List[Dict]) -> List[Dict]:
         """UNIQUE FEATURE: UPI-specific fraud patterns"""
-        alerts = []
-        
-        # Handle recycling detection
-        handle_usage = {}
-        for tx in transactions:
-            handle = tx.get('upi_handle')
-            if handle:
-                handle_usage[handle] = handle_usage.get(handle, 0) + 1
-        
-        for handle, count in handle_usage.items():
-            if count > 50:  # Suspicious handle reuse
-                alerts.append({
-                    'type': 'handle_recycling',
-                    'handle': handle,
-                    'transaction_count': count,
-                    'risk': 'HIGH'
-                })
-        
-        return alerts
+        # Placeholder logic
+        return []
+
+    def _generate_fraud_summary(self, anomalies: list) -> dict:
+        """Generates a summary of the fraud analysis."""
+        return {
+            "total_anomalies": len(anomalies),
+            "critical_risk_count": sum(1 for a in anomalies if a.risk_level == "CRITICAL"),
+            "high_risk_count": sum(1 for a in anomalies if a.risk_level == "HIGH"),
+        }

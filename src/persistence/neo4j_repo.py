@@ -1,79 +1,46 @@
+# src/persistence/neo4j_repo.py
+
 from neo4j import GraphDatabase
-from typing import List, Dict, Any
-import asyncio
-from contextlib import asynccontextmanager
+from typing import Dict
 import os
-from dotenv import load_dotenv
-load_dotenv()  # Add at top of files
-uri = os.getenv('NEO4J_URI')
-# etc.
+import uuid # Import the library for generating unique IDs
+
 class Neo4jRepository:
     """Production Neo4j integration with connection pooling"""
     
-    def __init__(self, uri="bolt://localhost:7687", user="neo4j", password="password"):
-        self.driver = GraphDatabase.driver(uri, auth=(user, password))
+    def __init__(self):
+        uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
+        user = os.getenv("NEO4J_USER", "neo4j")
+        password = os.getenv("NEO4J_PASSWORD", "password")
+        self._driver = GraphDatabase.driver(uri, auth=(user, password))
     
-    async def store_transaction(self, domain: str, transaction: Dict):
-        """Store transaction as graph nodes/edges"""
-        async with self.driver.session() as session:
-            await session.run(
-                """
-                MERGE (a:Entity {id: $sender, domain: $domain})
-                MERGE (b:Entity {id: $receiver, domain: $domain})
-                MERGE (a)-[t:TRANSACTION {
-                    domain: $domain,
-                    amount: $amount,
-                    timestamp: $timestamp,
-                    weight: $weight
-                }]->(b)
-                """,
-                domain=domain,
-                sender=transaction['sender'],
-                receiver=transaction['receiver'],
-                amount=transaction.get('amount', 0),
-                timestamp=transaction.get('timestamp'),
-                weight=transaction.get('weight', 1.0)
-            )
-    
+    # --- FIX: This is now a regular function, not an async one ---
+    def close(self):
+        """Closes the database driver connection."""
+        if self._driver:
+            self._driver.close()
+            
     async def store_analysis_results(self, domain: str, results: Dict):
         """Store anomaly detection results"""
-        async with self.driver.session() as session:
+        async with self._driver.session() as session:
             for anomaly in results.get('anomalies', []):
+                timestamp_str = anomaly['timestamp'].isoformat()
+                unique_id = str(uuid.uuid4())
+                
                 await session.run(
                     """
                     MERGE (a:Anomaly {id: $anomaly_id, domain: $domain})
                     SET a.score = $score,
                         a.risk_level = $risk_level,
                         a.detected_at = $timestamp,
-                        a.explanation = $explanation
+                        a.explanation = $explanation,
+                        a.entities = $entities
                     """,
-                    anomaly_id=f"{domain}_{anomaly['entities'][0]}_{results['timestamp']}",
+                    anomaly_id=unique_id,
                     domain=domain,
                     score=anomaly['score'],
                     risk_level=anomaly['risk_level'],
-                    timestamp=results['timestamp'],
-                    explanation=str(anomaly['explanation'])
+                    timestamp=timestamp_str,
+                    explanation=str(anomaly['explanation']),
+                    entities=anomaly.get('entities', [])
                 )
-    
-    async def query_historical_anomalies(self, domain: str, limit: int = 100):
-        """Query historical anomalies for analysis"""
-        async with self.driver.session() as session:
-            result = await session.run(
-                """
-                MATCH (a:Anomaly {domain: $domain})
-                RETURN a.id, a.score, a.risk_level, a.detected_at, a.explanation
-                ORDER BY a.detected_at DESC
-                LIMIT $limit
-                """,
-                domain=domain, limit=limit
-            )
-            return await result.data()
-    
-    async def close(self):
-        await self.driver.close()
-
-@asynccontextmanager
-async def get_neo4j_session(driver):
-    """Context manager for Neo4j sessions"""
-    async with driver.session() as session:
-        yield session
