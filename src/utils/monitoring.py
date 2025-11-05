@@ -38,11 +38,11 @@ class MetricsCollector:
         """Generate Prometheus metrics text format."""
         return generate_latest(REGISTRY)
 
-    def start_server(self, port=8001): # Changed port to avoid conflict with API
+    def start_server(self, port=8001): 
         """Starts the Prometheus metrics server."""
         prometheus_client.start_http_server(port)
         print(f"Prometheus metrics server started on port {port}")
 
 
-# --- Singleton Instance ---
+
 metrics_collector = MetricsCollector()

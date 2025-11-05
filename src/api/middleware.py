@@ -4,7 +4,6 @@ import time
 from fastapi import Request, HTTPException, status
 
 # A simple in-memory dictionary to store request timestamps
-# In a production system, you'd use something more robust like Redis
 request_timestamps = {}
 
 def rate_limit(limit: int = 10, per: int = 60):

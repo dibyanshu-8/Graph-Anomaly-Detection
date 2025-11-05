@@ -14,7 +14,7 @@ class Neo4jRepository:
         password = os.getenv("NEO4J_PASSWORD", "password")
         self._driver = GraphDatabase.driver(uri, auth=(user, password))
     
-    # --- FIX: This is now a regular function, not an async one ---
+    
     def close(self):
         """Closes the database driver connection."""
         if self._driver:

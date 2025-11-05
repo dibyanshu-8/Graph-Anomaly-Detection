@@ -59,7 +59,7 @@ class UniversalGraphEngine(BaseGraphEngine):
         self._add_node_features(G)
         return G
 
-    # --- THIS IS THE NEW, REQUIRED METHOD ---
+    
     def extract_features(self, graph: nx.DiGraph) -> Dict[str, Any]:
         """
         Extracts high-level features from the entire graph.
@@ -75,7 +75,7 @@ class UniversalGraphEngine(BaseGraphEngine):
             "avg_clustering": nx.average_clustering(graph.to_undirected()),
             "connected_components": nx.number_weakly_connected_components(graph)
         }
-    # ----------------------------------------
+    
 
     def _calculate_weight(self, item: Dict) -> float:
         """Domain-specific weight calculation"""

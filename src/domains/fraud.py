@@ -3,7 +3,7 @@
 from typing import Dict, List
 from ..core.graph_engine import UniversalGraphEngine
 from ..core.anomaly_detector import AdvancedAnomalyDetector
-from datetime import datetime # You might need this for _is_festival_period
+from datetime import datetime 
 
 class FraudDomainProcessor:
     """Banking fraud detection with UPI-specific patterns"""
@@ -22,7 +22,7 @@ class FraudDomainProcessor:
         self.engine = UniversalGraphEngine(self.DOMAIN_CONFIG)
         self.detector = AdvancedAnomalyDetector(self.DOMAIN_CONFIG)
     
-    # RENAMED THIS METHOD
+    
     def process_data(self, transactions: List[Dict], incremental: bool = False) -> Dict:
         """Process banking transactions with fraud-specific logic"""
         processed_data = self._preprocess_upi_patterns(transactions)
@@ -41,20 +41,20 @@ class FraudDomainProcessor:
     
     def _preprocess_upi_patterns(self, transactions: List[Dict]) -> List[Dict]:
         """India-specific UPI fraud preprocessing"""
-        # Placeholder logic
+
         return transactions
 
     def _calculate_handle_stability(self, tx: Dict) -> float:
-        # Placeholder logic
+        
         return 1.0
 
     def _is_festival_period(self, timestamp_str: str) -> bool:
-        # Placeholder logic
+        
         return False
     
     def _detect_upi_fraud_patterns(self, transactions: List[Dict]) -> List[Dict]:
         """UNIQUE FEATURE: UPI-specific fraud patterns"""
-        # Placeholder logic
+        
         return []
 
     def _generate_fraud_summary(self, anomalies: list) -> dict:

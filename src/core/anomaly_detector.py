@@ -46,7 +46,6 @@ class AdvancedAnomalyDetector:
         
         return sorted(results, key=lambda x: x.score, reverse=True)
 
-    # --- THIS IS THE NEW, REQUIRED METHOD ---
     def _extract_node_features(self, G: nx.DiGraph) -> Dict[str, List[float]]:
         """
         Extracts features from each node into a dictionary for the ML model.
@@ -61,7 +60,7 @@ class AdvancedAnomalyDetector:
                 data.get('page_rank', 0)
             ]
         return features
-    # ----------------------------------------
+
 
     def _detect_rings(self, G: nx.DiGraph) -> List[Dict]:
         """Find suspicious rings using strongly connected components"""
@@ -105,14 +104,14 @@ class AdvancedAnomalyDetector:
         
         node_features = self._extract_node_features(G)
         
-        # Only run ML model if there's enough data to be meaningful
+        
         if len(node_features) > 10:
             feature_matrix = np.array(list(node_features.values()))
             ml_scores = self.isolation_forest.fit_predict(feature_matrix)
             
-            # Additional logic for ML-based anomalies would go here...
+        
 
-        # For now, let's just use centrality for small graphs
+        #using centrality for small graphs
         betweenness = nx.betweenness_centrality(G, weight='weight')
         for node, score in betweenness.items():
             if score > self.centrality_threshold:
@@ -126,8 +125,7 @@ class AdvancedAnomalyDetector:
 
     def _combine_signals(self, rings: List, individual_anomalies: Dict) -> List[Dict]:
         """Combines ring and individual anomaly signals."""
-        # Simple combination for now, just return rings
-        # A more advanced system could merge entities found in both
+        
         return rings + list(individual_anomalies.values())
     
     def _generate_explanation(self, result: Dict, G: nx.DiGraph) -> Dict:

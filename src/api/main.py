@@ -22,7 +22,6 @@ async def lifespan(app: FastAPI):
     metrics_collector.start_server()
     yield
     print("INFO:     Shutting down application...")
-    # --- FIX: Removed 'await' from the close call ---
     app.state.neo4j.close()
 
 # Create the main FastAPI application instance
@@ -56,7 +55,6 @@ async def analyze_anomalies(domain: str, request: AnomalyRequest):
         }
     
     except Exception as e:
-        # --- FIX: Added detailed logging to see the real error in the terminal ---
         logging.exception(f"An error occurred during analysis for domain '{domain}': {e}")
         metrics_collector.increment("analysis_errors", domain=domain)
         raise HTTPException(status_code=500, detail="An internal error occurred during analysis.")
